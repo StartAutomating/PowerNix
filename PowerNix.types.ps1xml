@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 1.8.5: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>PowerNix.Memory</Name>
+    <Members>
+      <AliasProperty>
+        <Name>MemoryFree</Name>
+        <ReferencedMemberName>MemFree</ReferencedMemberName>
+      </AliasProperty>
+      <AliasProperty>
+        <Name>MemoryTotal</Name>
+        <ReferencedMemberName>MemTotal</ReferencedMemberName>
+      </AliasProperty>
+      <ScriptProperty>
+        <Name>MemoryPercentFree</Name>
+        <GetScriptBlock>
+                        ($this.MemFree / $this.MemTotal) * 100
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+    </Members>
+  </Type>
+</Types>

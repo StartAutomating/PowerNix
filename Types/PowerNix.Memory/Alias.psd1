@@ -1,0 +1,4 @@
+﻿@{
+    MemoryFree  = 'MemFree'
+    MemoryTotal = 'MemTotal'
+}

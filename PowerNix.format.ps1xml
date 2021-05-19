@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 1.8.5: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>PowerNix.Memory</Name>
+      <ViewSelectedBy>
+        <TypeName>PowerNix.Memory</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>% Free</Label>
+            <Alignment>Left</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>MemoryFree</Label>
+            <Alignment>Center</Alignment>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>MemoryTotal</Label>
+            <Alignment>Center</Alignment>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <ScriptBlock> [Math]::Round($_.MemoryPercentFree, 2) </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock> '' + [Math]::Round($_.MemFree / 1gb, 2) + 'gb' </ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock> '' + [Math]::Round($_.MemTotal / 1gb, 2) + 'gb' </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>PowerNix.Mount</Name>
+      <ViewSelectedBy>
+        <TypeName>PowerNix.Mount</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Options</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap />
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>TargetPath</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>SourceDevice</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>FileSystemType</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <ScriptBlock>
+        
+        @(
+        foreach ($opt in $_.Options) {
+             if ($opt -is [string]) {$opt}
+             if ($opt -is [Collections.IDictionary]) {
+                foreach ($o in $opt.GetEnumerator()) {
+                    if ($o.Key -match 'password') {
+                        '' + $o.Key + '=' + ('*' * 8)
+                    } else {
+                        '' + $o.Key + '=' + $o.Value
+                    }
+                }
+             }
+        }
+        ) -join [Environment]::NewLine
+    </ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
