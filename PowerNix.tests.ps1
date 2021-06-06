@@ -1,6 +1,12 @@
 ﻿#requires -Module Pester, PowerNix
 describe PowerNix {
     context Mounts {
+        it 'Can Get-NixMount' {
+            $nixMounts = Get-NixMount
+            $nixMounts | 
+                Select-Object -ExpandProperty MountPoint | 
+                Should -BeLike '/*'
+        }
         it 'Can Mount a Filesystem' {
             Mount-Nix -Device //computer/share/ -MountPoint /mnt/computer -FileSystemType cifs -Option rw -WhatIf |
                 Should -Be 'mount -t cifs //computer/share/ /mnt/computer -o rw'
