@@ -20,5 +20,15 @@ describe PowerNix {
             $dismountOutput[0].GetType() | Should -Be ([Management.Automation.WarningRecord])
             $dismountOutput[1] | Should -Be 'umount -a'
         }
-    }   
+    }
+    
+    it 'Can Get Uptimes' {
+        $uptime = Get-NixUptime 
+        $uptime.Uptime | Should -BeGreaterThan ([Timespan]"00:00:01")
+    }
+    
+    it 'Can Get Memory' {
+        $memInfo =  Get-NixMemory
+        $memInfo.MemoryPercentFree | Should -BeLessOrEqual 100
+    }  
 }
