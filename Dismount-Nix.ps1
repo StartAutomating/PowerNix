@@ -72,18 +72,26 @@ function Dismount-Nix
             #There could be a better way of regexing this line as
             #a trailing / would break this simple matching
             Get-Content -Path $FileSystemTablePath |
-            Select-String -Pattern $line -NotMatch |
-            Set-Content -Path $FileSystemTablePath -PassThru:$PassThru
+                Select-String -Pattern $line -NotMatch |
+                Set-Content -Path $FileSystemTablePath -PassThru:$PassThru
         }
 
         #Umount with Options
         if ($all){
             Write-Warning "About to remove all mounts"
-            umount -a
+            if ($WhatIfPreference) {
+                'umount -a'
+            }
+            elseif ($PSCmdlet.ShouldProcess("Unmount All")) {
+                umount -a
+            }
+            return            
         }
         if ($WhatIfPreference) {
             return "umount $Device $MountPoint"
         }
-        umount $Device $MountPoint
+        if ($PSCmdlet.ShouldProcess("Dismount $device $MountPoint")) {
+            umount $Device $MountPoint
+        }
     }
 }
