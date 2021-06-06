@@ -1,5 +1,6 @@
 ﻿
 name: PowerNix
+on: push
 jobs: 
   PowerShellStaticAnalysis: 
     runs-on: ubuntu-latest
@@ -176,7 +177,4 @@ jobs:
           name: PesterResults
           path: '**.TestResults.xml'
         if: ${{always()}}
-on: 
-  - push
-  - workflow_dispatch: 
 
