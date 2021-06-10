@@ -2,7 +2,7 @@
 {
     <#
     .Synopsis
-        Gets mounts 
+        Gets mounts
     .Description
         Gets existing filesystem mounts
     .Example
@@ -33,17 +33,17 @@
 
             $MountInfoText = Get-Content $MountInfoPath # Get the mount info, line by line.
         }
-                 
+
         $MountInfoText | # Walk over each line
             & { process  {
                 $source, $target, $fileSystem, $mountInfo, $null, $null =  $_ -split ' ' # split them up with multiple assignment.
                 [PSCustomObject][Ordered]@{
                     # Decorate the output with the typename 'PowerNix.Mount' (this enables format/types files)
-                    PSTypeName     = 'PowerNix.Mount' 
-                    SourceDevice   = $source
-                    TargetPath     = $target
+                    PSTypeName     = 'PowerNix.Mount'
+                    Device         = $source
+                    MountPoint     = $target
                     FileSystemType = $fileSystem
-                    Options  = @( # Turn the options string into strings or objects. 
+                    Options  = @( # Turn the options string into strings or objects.
                         $kvs = [ordered]@{} # Options can either be a key=value or a just a value.
                         foreach ($mnt in $mountInfo -split ',') { # Each option is separated by a comma.
                             if ($mnt.Contains('=')) { # If it's key-value
@@ -54,10 +54,10 @@
                             }
                         }
                         if ($kvs.Count) { # If we had any key value pairs
-                            # Output that collection.  
+                            # Output that collection.
                             # This will make .options:
                             # "stringOption1", "stringoption2", @{key1='value1';key2='value2'} # etc
-                            $kvs 
+                            $kvs
                         }
                     )
                 }
