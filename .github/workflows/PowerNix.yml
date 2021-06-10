@@ -346,11 +346,17 @@ jobs:
               
               $gk = '${{secrets.GALLERYKEY}}'
               
-              $moduleTempPath = Join-Path $pwd $moduleName
+              $rn = Get-Random
+              $moduleTempFolder = Join-Path $pwd "$rn"
+              $moduleTempPath = Join-Path $moduleTempFolder $moduleName
+              New-Item -ItemType Directory -Path $moduleTempPath -Force | Out-Host
                               
               Write-Host "Staging Directory: $ModuleTempPath"
                                       
-              $imported | Split-Path | Copy-Item -Destination $moduleTempPath -Recurse
+              $imported | Split-Path | 
+                  Get-ChildItem | 
+                  Where-Object Name -NE $rn |
+                  Copy-Item -Destination $moduleTempPath -Recurse
               $moduleGitPath = Join-Path $moduleTempPath '.git'
               Write-Host "Removing .git directory"
               Remove-Item -Recurse -Force $moduleGitPath
