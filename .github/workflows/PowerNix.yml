@@ -243,7 +243,8 @@ jobs:
           ::endgroup::
           "@ | Out-Host
           
-          if (-not ($gitHubEvent.pullrequest.merged) -and (-not $gitHubEvent.psobject.properties['input'])) {
+          if (-not ($gitHubEvent.head_commit.message -notmatch "Merge Pull Request #(?<PRNumber>\d+)") -and 
+              (-not $gitHubEvent.psobject.properties['inputs'])) {
               "::warning::Pull Request has not merged, skipping" | Out-Host
               return
           }
@@ -320,7 +321,8 @@ jobs:
           ::endgroup::
           "@ | Out-Host
           
-          if (-not ($gitHubEvent.pullrequest.merged) -and (-not $gitHubEvent.psobject.properties['input'])) {
+          if (-not ($gitHubEvent.head_commit.message -notmatch "Merge Pull Request #(?<PRNumber>\d+)") -and 
+              (-not $gitHubEvent.psobject.properties['inputs'])) {
               "::warning::Pull Request has not merged, skipping" | Out-Host
               return
           }
