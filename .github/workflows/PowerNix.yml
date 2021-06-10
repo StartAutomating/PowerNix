@@ -354,12 +354,15 @@ jobs:
               Write-Host "Staging Directory: $ModuleTempPath"
                                       
               $imported | Split-Path | 
-                  Get-ChildItem | 
+                  Get-ChildItem -Force | 
                   Where-Object Name -NE $rn |
                   Copy-Item -Destination $moduleTempPath -Recurse
+              
               $moduleGitPath = Join-Path $moduleTempPath '.git'
               Write-Host "Removing .git directory"
-              Remove-Item -Recurse -Force $moduleGitPath
+              if (Test-Path $moduleGitPath) {
+                  Remove-Item -Recurse -Force $moduleGitPath
+              }
               Write-Host "Module Files:"
               Get-ChildItem $moduleTempPath -Recurse
               Write-Host "Publishing $moduleName [$($imported.Version)] to Gallery"
