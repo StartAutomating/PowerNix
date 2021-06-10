@@ -1,16 +1,16 @@
 ﻿
 name: PowerNix
 on: 
-  - push: 
-  - pull_request: 
-      branches: 
-      - main
-      - master
-      paths-ignore: 
-      - 'docs/**'
-      - '*.help.txt'
-      - '*.md'
-  - workflow_dispatch: 
+  push: 
+  pull_request: 
+    branches: 
+    - main
+    - master
+    paths-ignore: 
+    - 'docs/**'
+    - '*.help.txt'
+    - '*.md'
+  workflow_dispatch: 
 jobs: 
   PowerShellStaticAnalysis: 
     runs-on: ubuntu-latest
