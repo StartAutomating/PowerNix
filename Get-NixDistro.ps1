@@ -6,7 +6,9 @@
     .Description
         Gets the Distribution info from the current Unix machine, which is found in files beneath /etc/*release*.
     .Example
-        Get-NixDistro
+        Get-NixDistro # Get the current distro
+    .Example
+        Get-NixDistro | Format-Table -View Urls # Display URLs related to the distro.
     .Link
         Get-NixUptime
     #>
