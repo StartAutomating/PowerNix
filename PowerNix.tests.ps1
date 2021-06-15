@@ -12,6 +12,10 @@ describe PowerNix {
                 Should -Be 'mount -t cifs //computer/share/ /mnt/computer -o rw'
         }
 
+        it 'Can Get Distro Information' {
+            Get-NixDistro | Select-Object -ExpandProperty Name | Should -Belike *
+        }
+
         it 'Can Mount a FileSystem that is -Persistent' {
             Mount-Nix -Device //computer/share/ -MountPoint /mnt/computer -FileSystemType cifs -Option rw -WhatIf -Persistent |
                 Should -Be '//computer/share/ /mnt/computer cifs rw 0 0'
