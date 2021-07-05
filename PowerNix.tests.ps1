@@ -35,11 +35,6 @@ describe PowerNix {
     context Logs {
         BeforeAll  {
             $FileLogs = Get-NixLog -LogFilePath /var/log/syslog
-            $KernelLogs = Get-NixLog -KernalOnly -LineNumber 1
-            $JournalctlLogs = Get-NixLog -Identifier powershell -LineNumber 1 -After "2021-06-21 11:00:00"
-            mock pidof {
-                return $true
-            }
         }
         It 'Should get logs from /var/log/syslog' {
             $FileLogs | Should -not -be $null
@@ -49,11 +44,13 @@ describe PowerNix {
             $PowerShellLog | Should -not -be $null
         }
         It 'Should get Kernel Logs' {
+            $KernelLogs = Get-NixLog -KernalOnly -LineNumber 1
             $KernelLogs.SYSLOG_IDENTIFIER | Should -Be 'kernel'
-        }
+        } -skip #because "systemd not present in container"
         It 'Should get a journald log for PowerShell' {
+            $JournalctlLogs = Get-NixLog -Identifier powershell -LineNumber 1 -After "2021-06-21 11:00:00"
             $JournalctlLogs.SYSLOG_IDENTIFIER | Should -be 'powershell'
-        }
+        } -skip #because "systemd not present in container"
     }
     it 'Can Get Uptimes' {
         $uptime = Get-NixUptime
