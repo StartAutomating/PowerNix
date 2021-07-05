@@ -39,9 +39,9 @@ describe PowerNix {
         It 'Should get logs from /var/log/syslog' {
             $FileLogs | Should -not -be $null
         }
-        It 'Should have a syslog for PowerShell' {
-            $PowerShellLog = $FileLogs | Where-Object { $psitem.Process -ieq 'Powershell' } | Select-Object -First 1
-            $PowerShellLog | Should -not -be $null
+        It 'Should have a message from syslog' {
+            $Message = $FileLogs | Select-Object -First 1 -Property Message
+            $Message | Should -not -be $null
         }
         It 'Should get Kernel Logs' {
             $KernelLogs = Get-NixLog -KernalOnly -LineNumber 1
