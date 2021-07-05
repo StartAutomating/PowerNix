@@ -35,7 +35,7 @@ describe PowerNix {
     context Logs {
         BeforeAll  {
             $FileLogs = Get-NixLog -LogFilePath /var/log/syslog
-            $KernelLogs = Get-NixLog -KernelOnly -LineNumber 1
+            $KernelLogs = Get-NixLog -KernalOnly -LineNumber 1
             $JournalctlLogs = Get-NixLog -Unit PowerShell -LineNumber 1 -After "2021-06-21 11:00:00"
         }
         It 'Should get logs from /var/log/syslog' {
