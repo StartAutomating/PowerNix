@@ -5,11 +5,59 @@ function Get-NixLog
         Gets log information from journalctl or syslog formatted logs.
     .Description
         Gets log via journalctl produced by the journald service which is standard on all distros that use systemd.
-        Unless the -LogFilePath parameter is used, then it defaults to regex of the Syslog format.
+        If the -LogFilePath parameter is used then the command uses regex to parse in the Syslog format.
+        Otherwise
     .Example
-        Get-NigLog # returns all logs unfiltered from journald
+        # returns all logs unfiltered from journald
+        Get-NigLog
+
+        CURSOR                    : s=1032b59ef7f247819e0500ebe21424d3;i=19ac95;b=cab0af3b917244288fe2a15fc3b01
+                                    a42;m=1767c381e6c;t=5c65195d4a866;x=2e08686703b082cb
+        REALTIME_TIMESTAMP        : 1625428591945830
+        MONOTONIC_TIMESTAMP       : 1608401821292
+        BOOT_ID                   : <someBootID>
+        MACHINE_ID                : <someGuid>
+        HOSTNAME                  : ubuntu
+        SELINUX_CONTEXT           : unconfined
+
+        SYSTEMD_SLICE             : system.slice
+        SYSLOG_FACILITY           : 3
+        TRANSPORT                 : journal
+        PRIORITY                  : 4
+        CODE_FILE                 : ../src/resolve/resolved-dns-transaction.c
+        CODE_LINE                 : 1047
+        CODE_FUNC                 : dns_transaction_process_reply
+        SYSLOG_IDENTIFIER         : systemd-resolved
+        MESSAGE                   : Server returned error NXDOMAIN, mitigating potential DNS violation
+                                    DVE-2018-0001, retrying transaction with reduced feature level UDP.
+        PID                       : 899
+        UID                       : 101
+        GID                       : 103
+        COMM                      : systemd-resolve
+        EXE                       : /lib/systemd/systemd-resolved
+        CMDLINE                   : /lib/systemd/systemd-resolved
+        CAP_EFFECTIVE             : 0
+        SYSTEMD_CGROUP            : /system.slice/systemd-resolved.service
+        SYSTEMD_UNIT              : systemd-resolved.service
+        SYSTEMD_INVOCATION_ID     : <someSystemD_ID>
+        SOURCE_REALTIME_TIMESTAMP : 1625428591945762
+
     .Example
-        Get-NixLog | Where {$psitem }
+        # Returns logs from the /var/log/syslog in the following format
+        Get-NixLog -LogFilePath /var/log/syslog
+
+        DATE     : Jun  20 19:56:14
+        HOSTNAME : ubuntu
+        PROCESS  : powershell
+        PID      : 16195
+        MESSAGE  : {(7.1.3:1:80)
+                [Perftrack_ConsoleStartupStart:PowershellConsoleStartup.WinStart.Informational] PowerShell
+                console is starting up, }
+    .Example
+        # Uses native journalctl filtering to limit logs to a specifc time and priority
+        # Like other PowerShell commands filtering on the cmdlet is faster than filtering later in the pipeline
+        Get-NixLog -After "2021-06-21 00:00:00" -Priority err,warning | select -first 10
+
     #>
     [OutputType([Nullable], [string])]
     [Cmdletbinding(DefaultParameterSetName='Journalctl')]
