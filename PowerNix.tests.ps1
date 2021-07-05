@@ -3,8 +3,8 @@ describe PowerNix {
     context Mounts {
         it 'Can Get-NixMount' {
             $nixMounts = Get-NixMount
-            $nixMounts | 
-                Select-Object -ExpandProperty MountPoint | 
+            $nixMounts |
+                Select-Object -ExpandProperty MountPoint |
                 Should -BeLike '/*'
         }
         it 'Can Mount a Filesystem' {
@@ -31,14 +31,34 @@ describe PowerNix {
             $dismountOutput[1] | Should -Be 'umount -a'
         }
     }
-    
+
+    context Logs {
+        BeforeAll  {
+            $FileLogs = Get-NixLog -LogFilePath /var/log/syslog
+            $KernelLogs = Get-NixLog -KernelOnly -LineNumber 1
+            $JournalctlLogs = Get-NixLog -Unit PowerShell -LineNumber 1 -After "2021-06-21 11:00:00"
+        }
+        It 'Should get logs from /var/log/syslog' {
+            $FileLogs | Should -not -be $null
+        }
+        It 'Should have a syslog for PowerShell' {
+            $PowerShellLog = $FileLogs | Where-Object { $psitem.Process -ieq 'Powershell' } | Select-Object -First 1
+            $PowerShellLog | Should -not -be $null
+        }
+        It 'Should get Kernel Logs' {
+            $KernelLogs.SYSLOG_IDENTIFIER | Should -Be 'kernel'
+        }
+        It 'Should get a journald log for PowerShell' {
+            $JournalctlLogs.SYSLOG_IDENTIFIER | Should -be 'powershell'
+        }
+    }
     it 'Can Get Uptimes' {
-        $uptime = Get-NixUptime 
+        $uptime = Get-NixUptime
         $uptime.Uptime | Should -BeGreaterThan ([Timespan]"00:00:01")
     }
-    
+
     it 'Can Get Memory' {
         $memInfo =  Get-NixMemory
         $memInfo.MemoryPercentFree | Should -BeLessOrEqual 100
-    }  
+    }
 }
