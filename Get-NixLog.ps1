@@ -64,16 +64,26 @@ function Get-NixLog
     param(
     # The path to the logfile read by.
     [Parameter(ValueFromPipelineByPropertyName,ParameterSetName='LogFile')]
-    [System.IO.FileInfo]
+    [ValidateScript(
+        {
+            #Faster method for Resolve-Path
+            $ExecutionContext.SessionState.Path.GetResolvedPSPathFromPSPath($PSItem) -as [bool]
+        }
+    )]
+    [string]
     $LogFilePath,
 
     # A Time based filter for logs before a date. Example timestamp is "2020-04-08 17:12:00"
+    # Could also be yesterday, today, tomorrow
+    # [datetime]::now.ToString('s').Replace('T',' ')
     [Parameter(ParameterSetName='Journalctl',ValueFromPipelineByPropertyName)]
     [string]
     [alias('until')]
     $Before,
 
     # A Time based filter for logs after a date. Example timestamp is "2020-04-08 17:12:00"
+    # Could also be yesterday, today, tomorrow
+    # [datetime]::now.ToString('s').Replace('T',' ')
     [Parameter(ParameterSetName='Journalctl',ValueFromPipelineByPropertyName)]
     [string]
     [alias('since')]
@@ -145,28 +155,29 @@ function Get-NixLog
                 Write-Error "Systemd not detected must use -LogFilePath" -ErrorId File.Missing
                 return
             }
-            $journalArgs = [System.Text.StringBuilder]::new()
-            $null = $journalArgs.Append('-r -o json')
-            if($UTC){$null = $journalArgs.Append(" --utc ")}
-            if($KernalOnly){$null = $journalArgs.Append(" --dmesg ")}
-            if($Boot){$null = $journalArgs.Append(" -b $Boot ")}
-            if($LineNumber){$null = $journalArgs.Append(" -n $LineNumber ")}
-            if($Identifier){foreach($i in $Identifier){ $null = $journalArgs.Append(" -t $i ")}}
-            if($Unit){foreach($u in $Unit){ $null = $journalArgs.Append(" -u $u ")}}
-            if($Before){$null = $journalArgs.Append(" -U `"$Before`"")}
-            if($After){$null = $journalArgs.Append(" -S `"$After`"")}
+            $journalArgs = @('-r','-o','json'
+            if($UTC){"--utc"}
+            if($KernalOnly){"--dmesg"}
+            if($Boot){"-b","$Boot"}
+            if($LineNumber){"-n","$LineNumber"}
+            if($Identifier){foreach($i in $Identifier){"-t","$i"}}
+            if($Unit){foreach($u in $Unit){"-u","$u"}}
+            if($Before){"-U","`"$Before`""}
+            if($After){"-S","`"$After`""}
             if($Priority)
             {
                 if ($Priority.Count -gt 1)
                 {
-                    $null = $journalArgs.Append(" -p $($priority[0])..$($priority[-1])")
+                    "-p","$($priority[0])..$($priority[-1])"
                 } else
                 {
-                    $null = $journalArgs.Append(" -p $Priority")
+                    "-p","$Priority"
                 }
             }
+            )#end of the array
             # Invoking journalctl with arguements from parameters.
-            Invoke-Expression "journalctl $($journalArgs.tostring())" | convertfrom-json |
+            $results = journalctl @journalArgs
+            convertfrom-json -InputObject $results |
             & {
                 process {
                     $journalcltLogs = [Ordered]@{PSTypeName='PowerNix.Logs'} # create a dictionary to hold logs.
