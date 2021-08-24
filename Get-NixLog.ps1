@@ -64,6 +64,7 @@ function Get-NixLog
     param(
     # The path to the logfile read by.
     [Parameter(ValueFromPipelineByPropertyName,ParameterSetName='LogFile')]
+    [Alias("Fullname")]
     [ValidateScript(
         {
             #Faster method for Resolve-Path
@@ -129,24 +130,62 @@ function Get-NixLog
     $Priority
     )
 
+    begin{
+        # Contains patterns to identify the logging type
+        # Name captures will be declared as variables
+        # for example (?<hostname>\w+) will populate hostname
+        $logPatterns = [ordered]@{
+            Syslog = '(?<date>^\w.+:\d{2})\s(?<hostname>\w+)\s(?<process>.+?:)\s(?<message>.*)'
+
+        }
+        # Contains the script blocks to handle a given log type
+        $logReaders = [ordered]@{
+            Syslog = {  #Match a pid for the format [<number>] and assign it to the group process_pid
+                        $process_pid = if($process -match '(?<process_pid>(?<=\[)(?>.+\d)(?=\]))' ){$matches.process_pid} else{$null}
+                        #Match a process until a [ or :
+                        $process_name = if($process -match '(?<process_name>^.+\w(?=\[|:))'){$matches.process_name}
+                        [PSCustomObject][ordered]@{
+                            PsTypeName = "PowerNix.Log.Syslog"
+                            DATE = $date
+                            HOSTNAME = $hostname
+                            PROCESS = $process_name
+                            PID = $process_pid
+                            MESSAGE = $message
+                        }
+                     }
+        }
+    }
     process {
         if($LogFilePath) {
+            $isfirstline = $true
+            $logReader = ''
             $LogFileContent = Get-Content -Path $LogFilePath
-
             $LogFileContent |
             & { process {
-                #Split the syslog file by date, hostname, process to the first :, and message
-                $null, $date, $hostname, $process, $message = $PSItem -split '(?<date>^\w.+:\d{2})\s(?<hostname>\w+)\s(?<process>.+?:)\s(?<message>.*)'
-                #Match a pid for the format [<number>] and assign it to the group process_pid
-                $process_pid = if($process -match '(?<process_pid>(?<=\[)(?>.+\d)(?=\]))' ){$matches.process_pid} else{$null}
-                #Match a process until a [ or :
-                $process_name = if($process -match '(?<process_name>^.+\w(?=\[|:))'){$matches.process_name}
-                [PSCustomObject][ordered]@{
-                    DATE = $date
-                    HOSTNAME = $hostname
-                    PROCESS = $process_name
-                    PID = $process_pid
-                    MESSAGE = $message
+                if($isfirstline) {
+                    $isfirstline = $false
+                    # look through each log file pattern
+                    foreach ($kv in $logPatterns.GetEnumerator()){
+                        # if the pattern matches select the log type
+                        if( $PSItem -match $kv.Value ) {
+                            $logReader = $kv.Key
+                            break
+                        }
+                    }
+                    if (-not $logReader) {
+                        Write-Error -Message "Unable to parse log" -TargetObject $LogFilePath
+                    }
+                }
+
+                if (-not $logPatterns[$logReader] -or -not $logReaders[$logReader]){
+                    return
+                }
+
+                foreach ($match in [regex]::Matches($PSItem, $logPatterns[$logReader]) ){
+                    foreach ($group in $match.groups){
+                        $ExecutionContext.SessionState.PSVariable.Set($group.name, $group.value)
+                    }
+                    & $logReaders[$logReader]
                 }
             } }
         } else {
