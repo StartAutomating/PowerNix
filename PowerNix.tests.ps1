@@ -42,7 +42,7 @@ Aug 24 00:06:07 ubuntu systemd[1]: Started Network Manager.
             $FileLogs = Get-NixLog -LogFilePath '/tmp/test-syslog'
         }
         AfterAll{
-            Remote-Item -Path '/tmp/test-syslog' -Force
+            Remove-Item -Path '/tmp/test-syslog' -Force
         }
         It 'Should get logs from /var/log/test-syslog' {
             $FileLogs | Should -not -be $null

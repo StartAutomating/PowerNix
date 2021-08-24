@@ -58,6 +58,10 @@ function Get-NixLog
         # Like other PowerShell commands filtering on the cmdlet is faster than filtering later in the pipeline
         Get-NixLog -After "2021-06-21 00:00:00" -Priority err,warning | select -first 10
 
+    .Example
+        # Group all logs in the current syslog file by minute
+        Get-NixLog -LogFilePath '/var/log/syslog' | Group-Object {$_.date.minute}
+
     #>
     [OutputType([Nullable], [string])]
     [Cmdletbinding(DefaultParameterSetName='Journalctl')]
@@ -141,12 +145,12 @@ function Get-NixLog
         # Contains the script blocks to handle a given log type
         $logReaders = [ordered]@{
             Syslog = {  #Match a pid for the format [<number>] and assign it to the group process_pid
-                        $process_pid = if($process -match '(?<process_pid>(?<=\[)(?>.+\d)(?=\]))' ){$matches.process_pid} else{$null}
+                        $process_pid = if($process -match '(?<process_pid>(?<=\[)(?>.+\d)(?=\]))' ){$matches.process_pid -as [int]} else{$null}
                         #Match a process until a [ or :
                         $process_name = if($process -match '(?<process_name>^.+\w(?=\[|:))'){$matches.process_name}
                         [PSCustomObject][ordered]@{
                             PsTypeName = "PowerNix.Log.Syslog"
-                            DATE = $date
+                            DATE =  [datetime]::ParseExact($date, "MMM dd HH:mm:ss", [CultureInfo]::InvariantCulture)
                             HOSTNAME = $hostname
                             PROCESS = $process_name
                             PID = $process_pid
