@@ -34,9 +34,17 @@ describe PowerNix {
 
     context Logs {
         BeforeAll  {
-            $FileLogs = Get-NixLog -LogFilePath '/var/log/syslog'
+@'
+Aug 24 00:06:07 ubuntu rsyslogd: [origin software="rsyslogd" swVersion="8.2001.0" x-pid="699" x-info="https://www.rsyslog.com"] rsyslogd was HUPed
+Aug 24 00:06:07 ubuntu NetworkManager[690]: <info>  [1629763567.4088] NetworkManager (version 1.22.10) is starting... (for the first time)
+Aug 24 00:06:07 ubuntu systemd[1]: Started Network Manager.
+'@ | Set-Content '/tmp/test-syslog'
+            $FileLogs = Get-NixLog -LogFilePath '/tmp/test-syslog'
         }
-        It 'Should get logs from /var/log/syslog' {
+        AfterAll{
+            Remote-Item -Path '/tmp/test-syslog' -Force
+        }
+        It 'Should get logs from /var/log/test-syslog' {
             $FileLogs | Should -not -be $null
         }
         It 'Should have a message from syslog' {
