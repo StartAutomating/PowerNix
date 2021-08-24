@@ -34,7 +34,7 @@ describe PowerNix {
 
     context Logs {
         BeforeAll  {
-            $FileLogs = Get-NixLog -LogFilePath /var/log/syslog
+            $FileLogs = Get-NixLog -LogFilePath '/var/log/syslog'
         }
         It 'Should get logs from /var/log/syslog' {
             $FileLogs | Should -not -be $null
