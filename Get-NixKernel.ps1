@@ -1,9 +1,9 @@
 function Get-NixKernel {
     <#
     .Synopsis
-        Gets kernel info from a Unix machine
+        Gets kernel info from a Linux machine
     .Description
-        Gets the kernel info from the current Unix machine, which is found in files beneath /proc/version.
+        Gets the kernel info from the current Linux machine using the hostnamectl utility.
     .Example
         Get-NixKernel # Get the current kernel
     .Link
