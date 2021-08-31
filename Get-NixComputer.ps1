@@ -21,7 +21,7 @@ function Get-NixComputer {
                 $key = $key.trimstart()
                 $computerInfo[$key] = $value -replace '^"' -replace '"$'
             }    
-            $computerInfo
+            [PSCustomObject]$computerInfo
         } catch {
             Write-Error 'Failed to run hostnamectl.'
         }
