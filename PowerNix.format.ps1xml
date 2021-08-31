@@ -1,7 +1,63 @@
-﻿<?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0" encoding="utf-16"?>
 <!-- Generated with EZOut 1.8.5: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Configuration>
   <ViewDefinitions>
+    <View>
+      <Name>PowerNix.Computer</Name>
+      <ViewSelectedBy>
+        <TypeName>PowerNix.Computer</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Static hostname</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Icon name</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Chassis</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Machine ID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Boot ID</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Operating System</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Kernel</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Architecture</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
     <View>
       <Name>PowerNix.Distro</Name>
       <ViewSelectedBy>

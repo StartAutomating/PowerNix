@@ -1,5 +1,4 @@
-﻿function Get-NixDistro
-{
+﻿function Get-NixDistro {
     <#
     .Synopsis
         Gets Distro info from a Unix machine
@@ -14,9 +13,9 @@
     #>
     [OutputType('PowerNix.Uptime')]
     param(
-    # If set, will force a refresh of this cached distribution information.
-    [switch]
-    $Force
+        # If set, will force a refresh of this cached distribution information.
+        [switch]
+        $Force
     )
 
     process {
@@ -27,13 +26,15 @@
         }
         #endregion Check File Exists
 
-        if ($Force) { # If -Force is passed, 
+        if ($Force) {
+            # If -Force is passed, 
             $Script:CachedDistroInfo = $null # clear the cache.
         }
-        if (-not $Script:CachedDistroInfo) { # If nothing is in the cache
-            $releaseFileInfo = [Ordered]@{PSTypeName='PowerNix.Distro'} # create a dictionary to hold release info.
+        if (-not $Script:CachedDistroInfo) {
+            # If nothing is in the cache
+            $releaseFileInfo = [Ordered]@{PSTypeName = 'PowerNix.Distro' } # create a dictionary to hold release info.
             Get-ChildItem -Path /etc -Filter os-release -File | # Find the os-release file
-                & { process {
+            & { process {
                     $fileLines = [IO.File]::ReadAllLines($_.fullname) # Parse it out
                     foreach ($line in $fileLines) { 
                         $key, $value = $line -split '=', 2

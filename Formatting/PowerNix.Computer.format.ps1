@@ -1,0 +1,1 @@
+Write-FormatView -TypeName PowerNix.Computer -Property 'Static hostname', 'Icon name', 'Chassis', 'Machine ID', 'Boot ID', 'Operating System', 'Kernel', 'Architecture'
