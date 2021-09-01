@@ -139,8 +139,7 @@ function Get-NixLog
         # Name captures will be declared as variables
         # for example (?<hostname>\w+) will populate hostname
         $logPatterns = [ordered]@{
-            Syslog = '(?<date>^\w.+:\d{2})\s(?<hostname>\w+)\s(?<process>.+?:)\s(?<message>.*)'
-
+            Syslog = '(?<date>^\w.+:\d{2})\s(?<hostname>[a-zA-Z0-9][-a-zA-Z0-9_]+)\s(?<process>.+?:)\s(?<message>.*)'
         }
         # Contains the script blocks to handle a given log type
         $logReaders = [ordered]@{
