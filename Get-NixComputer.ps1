@@ -18,7 +18,7 @@ function Get-NixComputer {
             $computerInfo = [Ordered]@{PSTypeName = 'PowerNix.Computer' }
             foreach ($line in $hostnamectlOutput) {
                 $key, $value = $line.split(': ')
-                $key = $key.trimstart()
+                $key = $key -replace '\s'
                 $computerInfo[$key] = $value -replace '^"' -replace '"$'
             }    
             [PSCustomObject]$computerInfo
