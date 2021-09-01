@@ -24,7 +24,8 @@ To start off with, PowerNix has a few commands for getting system statistics and
 -------------------
 |  Verb|Noun      |
 |-----:|:---------|
-|   Get|-NixMemory|
+|   Get|-NixLog   |
+|      |-NixMemory|
 |      |-NixMount |
 |      |-NixUptime|
 | Mount|-Nix      |
