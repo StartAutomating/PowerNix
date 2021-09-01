@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-16"?>
+﻿<?xml version="1.0" encoding="utf-16"?>
 <!-- Generated with EZOut 1.8.5: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
 <Configuration>
   <ViewDefinitions>
@@ -8,9 +8,8 @@
         <TypeName>PowerNix.Computer</TypeName>
       </ViewSelectedBy>
       <TableControl>
+        <AutoSize />
         <TableHeaders>
-          <TableColumnHeader>
-          </TableColumnHeader>
           <TableColumnHeader>
           </TableColumnHeader>
           <TableColumnHeader>
@@ -30,22 +29,19 @@
           <TableRowEntry>
             <TableColumnItems>
               <TableColumnItem>
-                <PropertyName>Static hostname</PropertyName>
+                <PropertyName>StaticHostName</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Icon name</PropertyName>
+                <PropertyName>IconName</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Chassis</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Machine ID</PropertyName>
+                <PropertyName>MachineID</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>Boot ID</PropertyName>
-              </TableColumnItem>
-              <TableColumnItem>
-                <PropertyName>Operating System</PropertyName>
+                <PropertyName>OperatingSystem</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>Kernel</PropertyName>
