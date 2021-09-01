@@ -38,6 +38,8 @@ describe PowerNix {
 Aug 24 00:06:07 ubuntu rsyslogd: [origin software="rsyslogd" swVersion="8.2001.0" x-pid="699" x-info="https://www.rsyslog.com"] rsyslogd was HUPed
 Aug 24 00:06:07 ubuntu NetworkManager[690]: <info>  [1629763567.4088] NetworkManager (version 1.22.10) is starting... (for the first time)
 Aug 24 00:06:07 ubuntu systemd[1]: Started Network Manager.
+Aug 24 00:00:01 linux-test systemd[1]: logrotate.service: Succeeded.
+Aug 24 00:00:01 linux_test systemd[1]: logrotate.service: Succeeded.
 '@ | Set-Content '/tmp/test-syslog'
             $FileLogs = Get-NixLog -LogFilePath '/tmp/test-syslog'
         }
