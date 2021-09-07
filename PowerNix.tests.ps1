@@ -40,6 +40,8 @@ Aug 24 00:06:07 ubuntu NetworkManager[690]: <info>  [1629763567.4088] NetworkMan
 Aug 24 00:06:07 ubuntu systemd[1]: Started Network Manager.
 Aug 24 00:00:01 linux-test systemd[1]: logrotate.service: Succeeded.
 Aug 24 00:00:01 linux_test systemd[1]: logrotate.service: Succeeded.
+Sep  7 15:57:24 ubuntu systemd[980]: Reached target Main User Target.
+Sep  7 15:57:24 ubuntu systemd[980]: Startup finished in 510ms.
 '@ | Set-Content '/tmp/test-syslog'
             $FileLogs = Get-NixLog -LogFilePath '/tmp/test-syslog'
         }

@@ -147,9 +147,11 @@ function Get-NixLog
                         $process_pid = if($process -match '(?<process_pid>(?<=\[)(?>.+\d)(?=\]))' ){$matches.process_pid -as [int]} else{$null}
                         #Match a process until a [ or :
                         $process_name = if($process -match '(?<process_name>^.+\w(?=\[|:))'){$matches.process_name}
+                        # Single digit days of the month have a leading space instead of a zero
+                        $date_parse = if($date -match '\s{2}\d'){'MMM  d HH:mm:ss'} else { 'MMM dd HH:mm:ss' }
                         [PSCustomObject][ordered]@{
                             PsTypeName = "PowerNix.Log.Syslog"
-                            DATE =  [datetime]::ParseExact($date, "MMM dd HH:mm:ss", [CultureInfo]::InvariantCulture)
+                            DATE =  [datetime]::ParseExact($date, $date_parse, [CultureInfo]::InvariantCulture)
                             HOSTNAME = $hostname
                             PROCESS = $process_name
                             PID = $process_pid
