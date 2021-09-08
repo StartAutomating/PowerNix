@@ -5,9 +5,9 @@ function Get-NixComputer {
     .Description
         Gets the kernel info from the current Linux machine using the hostnamectl utility.
     .Example
-        Get-NixKernel # Get the current kernel
+        Get-NixComputer # Get the current kernel
     .Link
-        
+
     #>
     param(
     )
@@ -20,7 +20,7 @@ function Get-NixComputer {
                 $key, $value = $line.split(': ')
                 $key = $key -replace '\s'
                 $computerInfo[$key] = $value -replace '^"' -replace '"$'
-            }    
+            }
             [PSCustomObject]$computerInfo
         } catch {
             Write-Error 'Failed to run hostnamectl.'
