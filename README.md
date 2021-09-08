@@ -21,15 +21,16 @@ The goal of PowerNix is to expose Linux functionality in a _good_ PowerShell mod
 
 To start off with, PowerNix has a few commands for getting system statistics and manipulating mounts.
 
--------------------
-|  Verb | Noun       |
-| ----: | :--------- |
-|   Get | -NixLog    |
-|       | -NixMemory |
-|       | -NixMount  |
-|       | -NixUptime |
-|       | -NixKernel |
-| Mount | -Nix       |
--------------------
+----------------------
+|  Verb | Noun        |
+| ----: | :-----------|
+|   Get | -NixLog     |
+|       | -NixMemory  |
+|       | -NixMount   |
+|       | -NixUptime  |
+|       | -NixDistro  |
+|       | -NixComputer|
+| Mount | -Nix        |
+----------------------
 
 #### Want to help out? [Contribute](contributing.md)
