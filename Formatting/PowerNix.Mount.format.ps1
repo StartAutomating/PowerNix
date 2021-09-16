@@ -1,4 +1,4 @@
-﻿Write-FormatView -TypeName PowerNix.Mount -Property TargetPath, SourceDevice, FileSystemType, Options -VirtualProperty @{
+﻿Write-FormatView -TypeName PowerNix.Mount -Property MountPoint, Device, FileSystemType, Options -VirtualProperty @{
     Options = {
         
         @(
