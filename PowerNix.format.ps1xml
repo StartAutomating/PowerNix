@@ -185,10 +185,10 @@
             <Wrap />
             <TableColumnItems>
               <TableColumnItem>
-                <PropertyName>TargetPath</PropertyName>
+                <PropertyName>MountPoint</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>SourceDevice</PropertyName>
+                <PropertyName>Device</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                 <PropertyName>FileSystemType</PropertyName>
