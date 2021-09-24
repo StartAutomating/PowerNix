@@ -73,4 +73,9 @@ Sep  7 15:57:24 ubuntu systemd[980]: Startup finished in 510ms.
         $memInfo =  Get-NixMemory
         $memInfo.MemoryPercentFree | Should -BeLessOrEqual 100
     }
+
+    it 'Can Output Shebangs' {
+        Out-Shebang -Script "$({ "hello world $args" })" -Interpreter /bin/pwsh | 
+            Should -BeLike '#!/bin/pwsh*hello*world*$args*'
+    }        
 }
